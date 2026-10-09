@@ -1,0 +1,27 @@
+
+services:
+  db:
+    image: postgres:17
+    container_name: sinkdrive-db
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: sinkdrive
+      POSTGRES_USER: sinkdrive
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "127.0.0.1:5432:5432"
+
+    volumes:
+      - sinkdrive_pgdata:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sinkdrive -d sinkdrive"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  sinkdrive_pgdata:
+

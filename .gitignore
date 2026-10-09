@@ -1,0 +1,18 @@
+# Segredos e configurações locais
+.env
+.env.*
+!.env.example
+secrets.json
+appsettings.Development.json
+
+# .NET
+bin/
+obj/
+
+# IDEs
+.vs/
+.idea/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
