@@ -1,0 +1,70 @@
+
+@page
+@model SinkDrive.Pages.Account.LoginModel
+
+@{
+    Layout = "/Pages/Shared/_AuthLayout.cshtml";
+    ViewData["Title"] = "Entrar";
+}
+
+<section class="auth-card">
+    <h1 class="auth-title">Bem-vindo de volta.</h1>
+
+    <p class="auth-description">
+        Entre na sua conta para acessar seus arquivos em um só lugar.
+    </p>
+
+    <form method="post">
+        <input type="hidden" asp-for="ReturnUrl" />
+
+        <div asp-validation-summary="ModelOnly"
+             class="auth-validation mb-3"
+             role="alert"></div>
+
+        <div class="mb-3">
+            <label asp-for="Input.UserName" class="auth-label"></label>
+
+            <input asp-for="Input.UserName"
+                   class="form-control auth-input"
+                   placeholder="Digite seu nome de usuário"
+                   autocomplete="username"
+                   autofocus />
+
+            <span asp-validation-for="Input.UserName"
+                  class="auth-validation"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Input.Password" class="auth-label"></label>
+
+            <input asp-for="Input.Password"
+                   class="form-control auth-input"
+                   placeholder="Digite sua senha"
+                   autocomplete="current-password" />
+
+            <span asp-validation-for="Input.Password"
+                  class="auth-validation"></span>
+        </div>
+
+        <div class="form-check mb-4">
+            <input asp-for="Input.RememberMe"
+                   class="form-check-input" />
+
+            <label asp-for="Input.RememberMe"
+                   class="form-check-label text-light-emphasis">
+            </label>
+        </div>
+
+        <button type="submit"
+                class="btn auth-button w-100">
+            Entrar na conta
+        </button>
+    </form>
+
+    <div class="auth-footer">
+        Ainda não tem uma conta?
+        <a asp-page="/Account/Register" class="auth-link">
+            Cadastre-se
+        </a>
+    </div>
+</section>

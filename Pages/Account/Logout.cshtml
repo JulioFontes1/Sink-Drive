@@ -1,0 +1,26 @@
+@page
+@model SinkDrive.Pages.Account.LogoutModel
+@{
+    Layout = "_AuthLayout";
+    ViewData["Title"] = "Sair";
+}
+
+<div class="auth-card">
+    <h1 class="auth-title">Sair do SinkDrive</h1>
+
+    <p class="auth-description">
+        Deseja realmente encerrar sua sessão?
+    </p>
+
+    <form method="post">
+        <button type="submit" class="auth-button">
+            Sair da conta
+        </button>
+    </form>
+
+    <div class="auth-footer">
+        <a asp-page="/Index" class="auth-link">
+            Voltar para o início
+        </a>
+    </div>
+</div>
