@@ -1,0 +1,57 @@
+@page
+@model SinkDrive.Pages.CsvDemoModel
+
+@{
+    ViewData["Title"] = "Demonstração CSV";
+}
+
+<h1>Demonstração de CSV</h1>
+
+<p>
+    Esta página demonstra a leitura e a geração de arquivos CSV
+    usando os dados de contas Google fictícias.
+</p>
+
+<div class="d-flex gap-2 mb-4">
+    <form method="post" asp-page-handler="Read">
+        <button type="submit" class="btn btn-primary">
+            Ler arquivo
+        </button>
+    </form>
+
+    <form method="post" asp-page-handler="Download">
+        <button type="submit" class="btn btn-success">
+            Baixar CSV gerado
+        </button>
+    </form>
+</div>
+
+@if (Model.ErrorMessage is not null)
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+
+@if (Model.FileRead)
+{
+    <h2>Registros lidos: @Model.Accounts.Count</h2>
+
+    <table class="table table-dark table-striped">
+        <thead>
+        <tr>
+            <th>Google ID</th>
+            <th>E-mail</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var account in Model.Accounts)
+        {
+            <tr>
+                <td>@account.GoogleId</td>
+                <td>@account.Email</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
