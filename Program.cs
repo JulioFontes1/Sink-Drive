@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SinkDrive.Data;
 using SinkDrive.Models;
+using SinkDrive.Services;
 
 var  builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,9 @@ builder.Services.ConfigureApplicationCookie(option =>
 });
     
 builder.Services.AddRazorPages();
+builder.Services.AddControllers();
+
+builder.Services.AddScoped<GoogleOAuthService>();
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())
@@ -36,5 +40,6 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 app.MapRazorPages().WithStaticAssets();
+app.MapControllers();
 
 app.Run();

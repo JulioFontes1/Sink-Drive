@@ -34,17 +34,20 @@
             <nav class="app-nav" aria-label="Navegação principal">
                 <span class="app-nav-label">MENU</span>
 
-                <a class="app-nav-link active" asp-page="/Index">
+                <a class="app-nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Index" ? "active" : "")"
+                   asp-page="/Index">
                     <i class="bi bi-grid"></i>
                     <span>Visão geral</span>
                 </a>
 
-                <a class="app-nav-link" asp-page="/Index">
+                <a class="app-nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Files/Index" ? "active" : "")"
+                   asp-page="/Files/Index">
                     <i class="bi bi-folder2-open"></i>
                     <span>Meus arquivos</span>
                 </a>
 
-                <a class="app-nav-link" asp-page="/Index">
+                <a class="app-nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/GoogleAccounts" ? "active" : "")"
+                   asp-page="/GoogleAccounts">
                     <i class="bi bi-cloud"></i>
                     <span>Contas Google</span>
                 </a>
@@ -101,7 +104,6 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
