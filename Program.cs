@@ -27,6 +27,9 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<GoogleOAuthService>();
+builder.Services.AddScoped<DriveBrowserService>();
+builder.Services.AddHttpClient();
+
 
 var app = builder.Build();
 if (!app.Environment.IsDevelopment())

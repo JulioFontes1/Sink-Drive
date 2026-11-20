@@ -17,7 +17,15 @@ else
     <ul class="list-group">
         @foreach (var account in Model.Accounts)
         {
-            <li class="list-group-item list-group-item-secondary m-1">@account.Email</li>
+            <li class="list-group-item list-group-item-secondary m-1">
+                @account.Email
+                
+                <form method="post" asp-page-handler="Disconnect">
+                    <input type="hidden" name="id" value="@account.Id" />
+                    <button type="submit">Desconectar</button>
+                </form>
+            </li>
+            
         }
     </ul>
 }
