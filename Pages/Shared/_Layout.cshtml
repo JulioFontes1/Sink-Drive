@@ -34,16 +34,10 @@
             <nav class="app-nav" aria-label="Navegação principal">
                 <span class="app-nav-label">MENU</span>
 
-                <a class="app-nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Index" ? "active" : "")"
-                   asp-page="/Index">
+                <a class="app-nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Drive/Index" ? "active" : "")"
+                   asp-page="/Drive/Index">
                     <i class="bi bi-grid"></i>
                     <span>Visão geral</span>
-                </a>
-
-                <a class="app-nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/Files/Index" ? "active" : "")"
-                   asp-page="/Files/Index">
-                    <i class="bi bi-folder2-open"></i>
-                    <span>Meus arquivos</span>
                 </a>
 
                 <a class="app-nav-link @(ViewContext.RouteData.Values["Page"]?.ToString() == "/GoogleAccounts" ? "active" : "")"

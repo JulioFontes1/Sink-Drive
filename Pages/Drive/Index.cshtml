@@ -1,0 +1,97 @@
+@page "/"
+@model SinkDrive.Pages.Drive.IndexModel
+@{
+    ViewData["Title"] = "Meus arquivos";
+    var inFolder = !string.IsNullOrEmpty(Model.FolderId);
+    var current = Model.Accounts.FirstOrDefault(a => a.Id == Model.AccountId);
+    int ColorIndex(int accountId) => Math.Max(0, Model.Accounts.FindIndex(a => a.Id == accountId)) % 6;
+}
+
+<link rel="stylesheet" href="~/css/drive.css" asp-append-version="true" />
+
+<div class="drive-page">
+    <div class="drive-header">
+        <h1>Meus arquivos</h1>
+        <a class="btn btn-sm btn-outline-light" href="/auth/google/connect">+ Conectar conta Google</a>
+    </div>
+
+    @if (!Model.Accounts.Any())
+    {
+        <div class="drive-empty">
+            <p>Você ainda não conectou nenhuma conta Google.</p>
+            <a class="btn btn-primary" href="/auth/google/connect">Conectar conta Google</a>
+        </div>
+    }
+    else
+    {
+        <div class="drive-chips">
+            <a class="chip @(Model.AccountId is null ? "active" : "")" asp-page="./Index">Todas as contas</a>
+            @foreach (var acc in Model.Accounts)
+            {
+                <a class="chip acc-@ColorIndex(acc.Id) @(Model.AccountId == acc.Id ? "active" : "")"
+                   asp-page="./Index" asp-route-accountId="@acc.Id">@acc.Email</a>
+            }
+        </div>
+
+        @if (inFolder)
+        {
+            <nav class="drive-breadcrumb">
+                <a asp-page="./Index" asp-route-accountId="@Model.AccountId">@(current?.Email ?? "Início")</a>
+                @foreach (var crumb in Model.Breadcrumb)
+                {
+                    <span>/</span>
+                    <a asp-page="./Index" asp-route-accountId="@Model.AccountId" asp-route-folderId="@crumb.Id">@crumb.Name</a>
+                }
+            </nav>
+        }
+
+        @foreach (var err in Model.Errors)
+        {
+            var errAccount = Model.Accounts.First(a => a.Id == err.Key);
+            <div class="drive-alert">⚠️ <strong>@errAccount.Email:</strong> @err.Value</div>
+        }
+
+        @if (!Model.Items.Any() && !Model.Errors.Any())
+        {
+            <div class="drive-empty"><p>Esta pasta está vazia.</p></div>
+        }
+        else if (Model.Items.Any())
+        {
+            <table class="drive-table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Conta</th>
+                        <th>Modificado</th>
+                        <th class="num">Tamanho</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td class="name">
+                            <span class="icon">@IndexModel.IconFor(item)</span>
+                            @if (item.IsFolder)
+                            {
+                                <a asp-page="./Index" asp-route-accountId="@item.AccountId" asp-route-folderId="@item.Id">@item.Name</a>
+                            }
+                            else if (!string.IsNullOrEmpty(item.WebViewLink))
+                            {
+                                <a href="@item.WebViewLink" target="_blank" rel="noopener noreferrer">@item.Name</a>
+                            }
+                            else
+                            {
+                                <span>@item.Name</span>
+                            }
+                        </td>
+                        <td><span class="badge-acc acc-@ColorIndex(item.AccountId)">@item.AccountEmail</span></td>
+                        <td>@(item.ModifiedTime?.ToString("dd/MM/yyyy HH:mm") ?? "—")</td>
+                        <td class="num">@(item.IsFolder ? "—" : IndexModel.FormatSize(item.Size))</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        }
+    }
+</div>

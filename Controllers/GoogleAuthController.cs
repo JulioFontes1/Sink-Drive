@@ -88,6 +88,6 @@ public class GoogleAuthController : Controller
 
         await _db.SaveChangesAsync();
 
-        return RedirectToPage("/Index");
+        return RedirectToPage("/Drive/Index");
     }
 }

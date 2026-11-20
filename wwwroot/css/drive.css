@@ -1,0 +1,53 @@
+.drive-page { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1rem; color: #e6e6ea; }
+
+.drive-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+.drive-header h1 { font-size: 1.5rem; margin: 0; }
+
+.drive-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1rem; }
+.chip {
+    padding: .3rem .8rem; border-radius: 999px; font-size: .85rem; text-decoration: none;
+    background: #23232b; color: #c9c9d1; border: 1px solid #33333d;
+}
+.chip:hover { background: #2c2c36; color: #fff; }
+.chip.active { background: #3b3b4a; color: #fff; border-color: #6c6cff; }
+
+.drive-breadcrumb { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: 1rem; font-size: .9rem; color: #8a8a96; }
+.drive-breadcrumb a { color: #9aa0ff; text-decoration: none; }
+.drive-breadcrumb a:hover { text-decoration: underline; }
+
+.drive-alert {
+    background: #3a2a1a; border: 1px solid #6b4a20; color: #ffd9a0;
+    padding: .6rem .9rem; border-radius: 8px; margin-bottom: .75rem; font-size: .9rem;
+}
+
+.drive-empty { text-align: center; padding: 3rem 1rem; color: #8a8a96; }
+
+.drive-table { width: 100%; border-collapse: collapse; background: #1a1a21; border-radius: 10px; overflow: hidden; }
+.drive-table th {
+    text-align: left; font-weight: 500; font-size: .8rem; text-transform: uppercase;
+    letter-spacing: .04em; color: #8a8a96; padding: .7rem 1rem; background: #20202a;
+}
+.drive-table td { padding: .65rem 1rem; border-top: 1px solid #262630; font-size: .92rem; vertical-align: middle; }
+.drive-table tbody tr:hover { background: #22222c; }
+.drive-table .num { text-align: right; white-space: nowrap; }
+.drive-table .name { display: flex; align-items: center; gap: .6rem; }
+.drive-table .name a { color: #e6e6ea; text-decoration: none; }
+.drive-table .name a:hover { color: #9aa0ff; text-decoration: underline; }
+.drive-table .icon { font-size: 1.15rem; }
+
+.badge-acc {
+    display: inline-block; padding: .15rem .6rem; border-radius: 999px;
+    font-size: .75rem; border: 1px solid currentColor; white-space: nowrap;
+    max-width: 220px; overflow: hidden; text-overflow: ellipsis; vertical-align: middle;
+}
+
+.acc-0 { color: #7aa2ff; }
+.acc-1 { color: #5fd6a0; }
+.acc-2 { color: #ffb86b; }
+.acc-3 { color: #ff7ab8; }
+.acc-4 { color: #c39bff; }
+.acc-5 { color: #6fd8e0; }
+
+@media (max-width: 700px) {
+    .drive-table th:nth-child(3), .drive-table td:nth-child(3) { display: none; }
+}

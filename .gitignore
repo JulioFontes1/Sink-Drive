@@ -16,3 +16,4 @@ obj/
 # Sistema operacional
 .DS_Store
 Thumbs.db
+*.DotSettings.user
