@@ -13,16 +13,16 @@ public class GoogleAccounts : PageModel
 {
     private readonly ApplicationDbContext _db;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly IHttpClientFactory _httpClientFactory;   // novo
+    private readonly IHttpClientFactory _httpClientFactory;   
 
     public GoogleAccounts(
         ApplicationDbContext db,
         UserManager<ApplicationUser> userManager,
-        IHttpClientFactory httpClientFactory)                 // novo
+        IHttpClientFactory httpClientFactory)                
     {
         _db = db;
         _userManager = userManager;
-        _httpClientFactory = httpClientFactory;               // novo
+        _httpClientFactory = httpClientFactory;              
     }
 
     public List<GoogleAccount> Accounts { get; private set; } = [];

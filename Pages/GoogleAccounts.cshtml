@@ -4,28 +4,83 @@
     ViewData["Title"] = "Contas Google";
 }
 
-<h1>Contas Google</h1>
+<link rel="stylesheet" href="~/css/accounts.css" asp-append-version="true" />
 
-<a class="btn btn-primary mb-3" href="/auth/google/connect">Conectar conta</a>
+<div class="accounts-page">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="mb-1">Contas Google</h1>
+            <p class="text-muted mb-0">Contas vinculadas ao seu SinkDrive.</p>
+        </div>
+        <a class="btn btn-primary" href="/auth/google/connect">
+            <i class="bi bi-plus-lg"></i> Conectar conta
+        </a>
+    </div>
 
-@if (Model.Accounts.Count == 0)
-{
-    <p>Nenhuma conta conectada.</p>
-}
-else
-{
-    <ul class="list-group">
-        @foreach (var account in Model.Accounts)
-        {
-            <li class="list-group-item list-group-item-secondary m-1">
-                @account.Email
-                
-                <form method="post" asp-page-handler="Disconnect">
-                    <input type="hidden" name="id" value="@account.Id" />
-                    <button type="submit">Desconectar</button>
-                </form>
-            </li>
-            
-        }
-    </ul>
+    @if (Model.Accounts.Count == 0)
+    {
+        <div class="account-empty text-center p-5 rounded">
+            <p class="mb-3">Nenhuma conta conectada.</p>
+            <a class="btn btn-primary" href="/auth/google/connect">Conectar primeira conta</a>
+        </div>
+    }
+    else
+    {
+        <div class="account-list">
+            @foreach (var account in Model.Accounts)
+            {
+                <div class="account-card">
+                    <div class="account-info">
+                        <span class="account-email">@account.Email</span>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-sm btn-outline-danger disconnectBtn"
+                            data-bs-toggle="modal"
+                            data-bs-target="#disconnectModal"
+                            data-account-id="@account.Id"
+                            data-account-email="@account.Email">
+                        <i class="bi bi-x-circle"></i> Desconectar
+                    </button>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Modal de confirmação -->
+<div class="modal fade" id="disconnectModal" tabindex="-1" aria-labelledby="disconnectTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Disconnect">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="disconnectTitle">Desconectar conta?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Você vai desconectar <strong id="disconnectEmail"></strong> do SinkDrive.</p>
+                    <ul class="small text-muted mb-0">
+                        <li>Os arquivos <strong>não</strong> serão apagados do Google Drive.</li>
+                        <li>A conta e seus arquivos deixarão de aparecer no SinkDrive.</li>
+                        <li>Você pode reconectá-la depois.</li>
+                    </ul>
+                    <input type="hidden" name="id" id="disconnectId" />
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Desconectar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+    document.getElementById('disconnectModal').addEventListener('show.bs.modal', function (event) {
+        const btn = event.relatedTarget;
+        document.getElementById('disconnectId').value = btn.getAttribute('data-account-id');
+        document.getElementById('disconnectEmail').textContent = btn.getAttribute('data-account-email');
+    });
+</script>
 }

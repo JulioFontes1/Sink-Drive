@@ -1,0 +1,54 @@
+.account-list {
+    display: flex;
+    flex-direction: column;
+    gap: .75rem;
+}
+
+.account-card {
+    display: flex;
+    align-items: center;
+    height: 72px;
+    gap: 1rem;
+    padding: .9rem 1.1rem;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: .75rem;
+    background: rgba(255, 255, 255, .04);
+    transition: border-color .15s, background .15s;
+}
+
+.account-card:hover {
+    border-color: rgba(255, 255, 255, .25);
+    background: rgba(255, 255, 255, .07);
+}
+
+.account-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+}
+
+.account-email {
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.account-sub {
+    flex-shrink: 0;
+    font-size: .75rem;
+    padding: .1rem .5rem;
+    border-radius: 999px;
+    color: #9aa4b2;
+    border: 1px solid rgba(255, 255, 255, .15);
+}
+
+.account-empty {
+    border: 1px dashed rgba(255, 255, 255, .2);
+}
+
+.disconnectBtn {
+    display: inline-flex;
+}
