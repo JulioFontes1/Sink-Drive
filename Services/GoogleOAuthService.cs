@@ -15,7 +15,7 @@ public class GoogleOAuthService
     [
         "openid",
         "email",
-        DriveService.Scope.DriveReadonly
+        DriveService.Scope.Drive
     ];
 
     private readonly string _clientId;

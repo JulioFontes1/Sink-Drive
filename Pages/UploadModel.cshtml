@@ -1,0 +1,129 @@
+@page
+@model UploadModel
+@{ ViewData["Title"] = "Enviar arquivo"; }
+
+<h2>Enviar arquivo</h2>
+
+@if (Model.Message is not null) { <div class="alert alert-success">@Model.Message</div> }
+@if (Model.Error is not null) { <div class="alert alert-danger">@Model.Error</div> }
+
+@if (!Model.Accounts.Any())
+{
+    <p>Nenhuma conta Google vinculada. Conecte uma conta antes de enviar arquivos.</p>
+}
+else
+{
+    <form method="post" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="mb-3">
+            <label class="form-label">Conta de destino</label>
+            <select asp-for="GoogleAccountId" asp-items="Model.Accounts" class="form-select">
+                <option value="">Selecione uma conta...</option>
+            </select>
+            <span asp-validation-for="GoogleAccountId" class="text-danger"></span>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label">Pasta de destino <small class="text-muted" hidden="hidden">(opcional)</small></label>
+            <input type="hidden" asp-for="FolderId" id="folderId" />
+
+            <div class="d-flex align-items-center gap-2 mb-2">
+                <nav id="folderPath" class="mb-2 small d-flex flex-wrap align-items-center gap-1"></nav>
+            </div>
+
+            <div id="folderBox" class="list-group" style="max-height: 220px; overflow-y: auto;"></div>
+        </div>
+        
+        <div class="mb-3">
+            <label class="form-label">Arquivo</label>
+            <input asp-for="UploadedFile" type="file" class="form-control" />
+            <span asp-validation-for="UploadedFile" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+}
+
+@section Scripts {
+<script>
+(function () {
+    const account = document.getElementById('GoogleAccountId');
+    const hidden = document.getElementById('folderId');
+    const box = document.getElementById('folderBox');
+    const pathEl = document.getElementById('folderPath');
+    let stack = []; // [{id, name}]
+
+    function renderPath() {
+        pathEl.innerHTML = '';
+
+        const crumb = (label, depth, active) => {
+            const el = document.createElement(active ? 'strong' : 'a');
+            el.textContent = label;
+            if (!active) {
+                el.href = '#';
+                el.className = 'text-decoration-none';
+                el.onclick = (e) => {
+                    e.preventDefault();
+                    stack = stack.slice(0, depth);
+                    select();
+                };
+            }
+            return el;
+        };
+
+        pathEl.appendChild(crumb('📁 Meu Drive', 0, stack.length === 0));
+        stack.forEach((s, i) => {
+            const sep = document.createElement('span');
+            sep.className = 'text-muted';
+            sep.textContent = '/';
+            pathEl.appendChild(sep);
+            pathEl.appendChild(crumb(s.name, i + 1, i === stack.length - 1));
+        });
+    }
+
+    function renderFolders(folders) {
+        box.innerHTML = '';
+        if (!folders.length) {
+            const empty = document.createElement('div');
+            empty.className = 'list-group-item text-muted';
+            empty.textContent = 'Sem subpastas';
+            box.appendChild(empty);
+            return;
+        }
+        folders.forEach(f => {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.className = 'list-group-item list-group-item-action';
+            b.textContent = '📁 ' + f.name;
+            b.onclick = () => { stack.push({ id: f.id, name: f.name }); select(); };
+            box.appendChild(b);
+        });
+    }
+
+    async function select() {
+        const current = stack.length ? stack[stack.length - 1] : null;
+        hidden.value = current ? current.id : '';
+        renderPath();
+        await load(current ? current.id : '');
+    }
+
+    async function load(parentId) {
+        if (!account.value) { box.innerHTML = ''; return; }
+        box.innerHTML = '<div class="list-group-item text-muted">Carregando...</div>';
+        const url = `?handler=Folders&accountId=${encodeURIComponent(account.value)}&parentId=${encodeURIComponent(parentId)}`;
+        try {
+            const r = await fetch(url);
+            if (!r.ok) throw new Error();
+            renderFolders(await r.json());
+        } catch {
+            box.innerHTML = '<div class="list-group-item text-danger">Não foi possível carregar as pastas.</div>';
+        }
+    }
+
+    account.addEventListener('change', () => { stack = []; select(); });
+
+    if (account.value) select(); else renderPath();
+})();
+</script>
+}

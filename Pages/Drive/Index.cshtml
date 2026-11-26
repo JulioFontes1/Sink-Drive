@@ -12,7 +12,12 @@
 <div class="drive-page">
     <div class="drive-header">
         <h1>Meus arquivos</h1>
-        <a class="btn btn-sm btn-outline-light" href="/auth/google/connect">+ Conectar conta Google</a>
+        <a class="btn btn-sm btn-outline-light"
+           asp-page="/UploadModel"
+           asp-route-accountId="@Model.AccountId">
+            <i class="bi bi-upload"></i>
+            <span>Enviar arquivo</span>
+        </a>
     </div>
 
     @if (!Model.Accounts.Any())

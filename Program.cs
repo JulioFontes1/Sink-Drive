@@ -29,6 +29,10 @@ builder.Services.AddControllers();
 builder.Services.AddScoped<GoogleOAuthService>();
 builder.Services.AddScoped<DriveBrowserService>();
 builder.Services.AddHttpClient();
+builder.Services.AddScoped<GoogleDriveUploadService>();
+
+builder.WebHost.ConfigureKestrel(o =>
+    o.Limits.MaxRequestBodySize = 100L * 1024 * 1024);
 
 
 var app = builder.Build();
