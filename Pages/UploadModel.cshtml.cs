@@ -45,7 +45,6 @@ public class UploadModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(CancellationToken ct)
     {
-        Console.WriteLine($"Files={Request.Form.Files.Count} Names=[{string.Join(",", Request.Form.Files.Select(f => f.Name))}] Bound={(UploadedFile is null ? "null" : UploadedFile.Length.ToString())}");
         await LoadAccountsAsync();
 
         if (UploadedFile == null || UploadedFile.Length == 0)
@@ -69,6 +68,8 @@ public class UploadModel : PageModel
             ModelState.AddModelError(nameof(GoogleAccountId), "Conta inválida.");
         }
 
+        if(!ModelState.IsValid || account is null) return Page();
+        
         try
         {
             await using var stream = UploadedFile.OpenReadStream();
